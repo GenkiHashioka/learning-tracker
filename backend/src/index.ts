@@ -25,7 +25,7 @@ const routes = app
       // カテゴリに関するタグをフィルタリングする
       const categoryTags = dbTags
         .filter((tag) => tag.categoryId === category.id)
-        .map((tag) => tag.name);
+        .map((tag) => ({ id: tag.id, name: tag.name }));
 
       return {
         id: category.id,

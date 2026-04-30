@@ -21,7 +21,7 @@ export default async function Home() {
           学習ダッシュボード
         </h1>
 
-        <TaskForm />
+        <TaskForm categories={categories} />
 
         <section className='mb-12'>
           <div className='flex items-center justify-between mb-4'>
@@ -94,10 +94,10 @@ export default async function Home() {
               <div className='flex flex-wrap gap-2'>
                 {category.tags.map((tag) => (
                   <span
-                    key={tag}
+                    key={tag.id}
                     className='px-3 py-1 bg-blue-50 text-blue-600 text-sm rounded-full font-medium'
                   >
-                    {tag}
+                    {tag.name}
                   </span>
                 ))}
               </div>
