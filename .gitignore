@@ -1,0 +1,19 @@
+# .gitignore
+
+# 依存関係
+node_modules/
+
+# Next.js のビルドファイル
+frontend/.next/
+frontend/out/
+
+# Hono のビルドファイル
+backend/dist/
+
+# データベースファイル
+*.db
+*.db-journal
+
+# 環境変数
+.env
+.env.local
