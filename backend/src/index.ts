@@ -78,7 +78,28 @@ const routes = app
       .leftJoin(tags, eq(tasks.tagId, tags.id)); // タスクとタグを結合するためのLEFT JOIN
 
     return c.json(allTasks);
-  });
+  })
+
+  .patch(
+    '/api/tasks/:id',
+    zValidator(
+      'json',
+      z.object({
+        // zodのenumを使って、文字列を指定する。
+        status: z.enum(['todo', 'in_progress', 'done']),
+      }),
+    ),
+    async (c) => {
+      // URLパラメータからタスクIDを取得
+      const id = Number(c.req.param('id'));
+      // 安全なステータスの文字列を取得
+      const { status } = c.req.valid('json');
+      // データベースの該当タスクを更新する
+      await db.update(tasks).set({ status: status }).where(eq(tasks.id, id));
+
+      return c.json({ success: true });
+    },
+  );
 
 const port = 3001;
 console.log(`Server is running on port ${port}`);
