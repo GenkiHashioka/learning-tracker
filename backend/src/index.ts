@@ -2,7 +2,7 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { serve } from '@hono/node-server';
 import { db } from './db/index.js';
-import { categories, tags, tasks } from './db/schema.js';
+import { categories, tags, tasks, timeLogs } from './db/schema.js';
 import { zValidator } from '@hono/zod-validator';
 import { z } from 'zod';
 import { eq } from 'drizzle-orm';
@@ -96,6 +96,30 @@ const routes = app
       const { status } = c.req.valid('json');
       // データベースの該当タスクを更新する
       await db.update(tasks).set({ status: status }).where(eq(tasks.id, id));
+
+      return c.json({ success: true });
+    },
+  )
+
+  .post(
+    '/api/time-logs',
+    zValidator(
+      'json',
+      z.object({
+        taskId: z.number(),
+        durationMinutes: z.number().min(1), // 最低1分以上の時間を記録する
+        notes: z.string().optional(),
+      }),
+    ),
+    async (c) => {
+      const body = c.req.valid('json');
+
+      // タイムログをDBに保存する
+      await db.insert(timeLogs).values({
+        taskId: body.taskId,
+        durationMinutes: body.durationMinutes,
+        notes: body.notes,
+      });
 
       return c.json({ success: true });
     },
