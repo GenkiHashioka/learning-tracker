@@ -5,11 +5,13 @@
 ## 🛠 技術スタック
 
 ### Frontend
+
 - **Framework:** Next.js (App Router)
 - **Language:** TypeScript
 - **Styling:** Tailwind CSS
 
 ### Backend
+
 - **Framework:** Hono
 - **Language:** TypeScript
 - **ORM:** Drizzle ORM
@@ -17,7 +19,6 @@
 - **API Communication:** Hono RPC (End-to-End Type Safety)
 
 ## 💡 特徴
+
 - Hono RPCを用いた、フロントエンドからバックエンドまでの完全な型安全（Type-Safe）な開発環境
 - Drizzle ORMによるスキーマ駆動開発
-
--テストテストテスト
