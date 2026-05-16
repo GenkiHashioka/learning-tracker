@@ -22,4 +22,5 @@
 
 - Hono RPCを用いた、フロントエンドからバックエンドまでの完全な型安全（Type-Safe）な開発環境
 - Drizzle ORMによるスキーマ駆動開発
+  富田さんはgitを勉強中です。
   testtesttest
