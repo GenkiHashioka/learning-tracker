@@ -16,21 +16,40 @@ const routes = app
   .get('/api/categories', async (c) => {
     // データベースから学習カテゴリを取得する
     const dbCategories = await db.select().from(categories);
-
     // データベースからタグを取得する
     const dbTags = await db.select().from(tags);
+    // タスクのデータを取得
+    const dbTasks = await db.select().from(tasks);
+    // タイムログのデータを取得
+    const dbTimeLogs = await db.select().from(timeLogs);
 
     // フロントエンドに返すためのデータ構造を作成する
     const result = dbCategories.map((category) => {
       // カテゴリに関するタグをフィルタリングする
-      const categoryTags = dbTags
-        .filter((tag) => tag.categoryId === category.id)
-        .map((tag) => ({ id: tag.id, name: tag.name }));
+      const categoryTags = dbTags.filter(
+        (tag) => tag.categoryId === category.id,
+      );
+      const categoryTagIds = categoryTags.map((tag) => tag.id);
+
+      // カテゴリに属するタスクのIDリストを集める
+      const categoryTaskIds = dbTasks
+        .filter(
+          (task) => task.tagId !== null && categoryTagIds.includes(task.tagId),
+        )
+        .map((task) => task.id);
+
+      // タスクに紐づくタイムログを合計する
+      const totalMinutes = dbTimeLogs
+        .filter(
+          (log) => log.taskId !== null && categoryTaskIds.includes(log.taskId),
+        )
+        .reduce((sum, log) => sum + log.durationMinutes, 0);
 
       return {
         id: category.id,
         name: category.name,
-        tags: categoryTags,
+        tags: categoryTags.map((tag) => ({ id: tag.id, name: tag.name })),
+        totalMinutes: totalMinutes,
       };
     });
 

@@ -1,6 +1,6 @@
 import { hc } from 'hono/client';
 import type { AppType } from '../../../backend/src/index';
-import TaskForm from '../components/TaskFrom';
+import TaskForm from '../components/TaskForm';
 import TaskList from '../components/TaskList';
 
 const client = hc<AppType>('http://localhost:3001');
